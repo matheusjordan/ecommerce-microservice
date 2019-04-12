@@ -1,30 +1,47 @@
 package test.ecommerce.produtos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import test.ecommerce.produtos.model.Product;
+import test.ecommerce.produtos.service.ProductService;
 
-@Controller
+@RestController
+@RequestMapping("/products")
 public class ProductController {
 
+    @Autowired
+    private ProductService service;
+
+    @PostMapping("/")
     public ResponseEntity<Product> create(Product product){
-
-        return new ResponseEntity<Product>(HttpStatus.CREATED);
+        service.create(product);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Product> read(Product product){
-
-        return new ResponseEntity<Product>(HttpStatus.FOUND);
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> read(@PathVariable( value = "id") Long id){
+        Product p = service.read(id);
+        return new ResponseEntity<>(p, HttpStatus.FOUND);
     }
 
+    @PutMapping("/")
     public ResponseEntity<Product> update(Product product){
-
-        return new ResponseEntity<Product>(HttpStatus.OK);
+        service.update(product);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Product> delete(Product product){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Product> delete(@PathVariable( value = "id") Long id){
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        return new ResponseEntity<Product>(HttpStatus.OK);
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Product>> listAll(Pageable pageable){
+        Iterable<Product> ps = service.readAll(pageable);
+        return new ResponseEntity<>(ps, HttpStatus.OK);
     }
 }

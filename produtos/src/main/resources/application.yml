@@ -1,0 +1,24 @@
+#Configuração de sevidor
+server:
+  port: 8080
+
+spring:
+  application:
+    name: products
+
+  jpa:
+    show-sql: true
+
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+
+  jax:
+    enabled: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/products?allowPublicKeyRetrieval=true&sslMode=DISABLED
+    username: root
+    password: root
